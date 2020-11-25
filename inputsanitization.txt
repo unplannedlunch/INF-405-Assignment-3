@@ -1,0 +1,10 @@
+The way this program handles dirty data is relatively naive, but it doesn't need to be terribly complicated.
+
+Lines 26 through 33 in main.py are where the sanitization happens.  This is within the populateDBFromFile() function, where the program reads the file and puts it into the database via calls to various functions in dbHandler.
+
+First, the program discards any rows that do not contain usable MMR data.  While all columns that have no usable data in the sheet have a -1 in place, I decided to add additional protections.
+My solution was to discard any row in which the MMR value is not between 0 and 100 (inclusively on both sides).  This will discard any illegal value, including the -1's found in the data file.
+
+Second, the program must account for the various school types found in the file.
+This program only cares about the values "Public", "Private", and "Charter".  Any school with a type value (or lack thereof) that is not equal to one of those three will be added to the database with a null value in the schooltype field.
+Because of this, the program can utilize this uncategorized data for overall percentages.
